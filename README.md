@@ -16,5 +16,7 @@ Distribuição do Java SE 17 e a versão mais recente do PostgreSQL.
     para criar três tabelas e nove elementos para teste, note que cada objeto contêm três elementos. 
     Esse processo pode ser feito através do terminal ou de uma IDE de sua preferência.
     
-    3. Após essa etapa, é hora de compilar o programa, para isso adicione o arquivo: postgresql-42.2.23.jar
-    no Build Path caso seja necessário. Enfim, execute java -jar target/FrmPrincipal.jar
+    3. Após essa etapa, é hora de compilar o programa, para isso adicione o arquivo: postgresql-42.2.23.jar 
+    no Build Path caso seja necessário. Em seguida, digite: javac -d bin src /br/com/pc2/rh/view/FrmPrincipal.java
+    Enfim, execute: java -cp bin src.br.com.pcs.rh.view.FrmPrincipal
+
