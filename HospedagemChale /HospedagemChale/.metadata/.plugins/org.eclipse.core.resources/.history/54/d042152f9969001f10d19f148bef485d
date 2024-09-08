@@ -1,0 +1,10 @@
+package br.com.pc2.rh.view;
+
+import br.com.pc2.rh.controller.ClienteController;
+
+public class Teste {
+	public static void main(String[] args) {
+		ClienteController cc  = new ClienteController();
+		cc.inserir(null);
+	}
+}

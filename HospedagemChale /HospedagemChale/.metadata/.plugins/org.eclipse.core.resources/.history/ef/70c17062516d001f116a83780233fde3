@@ -1,0 +1,276 @@
+package br.com.pc2.rh.view.Hospedagem;
+
+import br.com.pc2.rh.controller.HospedagemController;
+import br.com.pc2.rh.model.Hospedagem;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+public class FrmHospedagem extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTable tblConsulta;
+    private JTextField txtCodChale;
+    private JTextField txtEstado;
+    private JTextField txtDataInicio;
+    private JTextField txtDataFim;
+    private JTextField txtQtdPessoas;
+    private JTextField txtDesconto;
+    private JTextField txtValorFinal;
+    private JTextField txtCodCliente;
+    private JLabel lblMensagem;
+    private List<Hospedagem> listaHospedagens = new ArrayList<>();
+    private HospedagemController hospedagemController = new HospedagemController();
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                FrmHospedagem frame = new FrmHospedagem();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public FrmHospedagem() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 700, 600);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+
+        JPanel panel = new JPanel();
+        JPanel panel_1 = new JPanel();
+        JPanel panel_2 = new JPanel();
+
+        GroupLayout gl_contentPane = new GroupLayout(contentPane);
+        gl_contentPane.setHorizontalGroup(
+            gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                        .addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                        .addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                        .addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
+                    .addContainerGap())
+        );
+        gl_contentPane.setVerticalGroup(
+            gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                .addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+                    .addComponent(panel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                    .addGap(18)
+                    .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(ComponentPlacement.UNRELATED)
+                    .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                    .addContainerGap())
+        );
+
+        JScrollPane scrollPane = new JScrollPane();
+        GroupLayout gl_panel_2 = new GroupLayout(panel_2);
+        gl_panel_2.setHorizontalGroup(
+            gl_panel_2.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(GroupLayout.Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                    .addContainerGap())
+        );
+        gl_panel_2.setVerticalGroup(
+            gl_panel_2.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_panel_2.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addContainerGap())
+        );
+
+        tblConsulta = new JTable();
+        tblConsulta.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int linha = tblConsulta.getSelectedRow();
+                txtCodChale.setText(tblConsulta.getValueAt(linha, 0).toString());
+                txtEstado.setText(tblConsulta.getValueAt(linha, 1).toString());
+                txtDataInicio.setText(tblConsulta.getValueAt(linha, 2).toString());
+                txtDataFim.setText(tblConsulta.getValueAt(linha, 3).toString());
+                txtQtdPessoas.setText(tblConsulta.getValueAt(linha, 4).toString());
+                txtDesconto.setText(tblConsulta.getValueAt(linha, 5).toString());
+                txtValorFinal.setText(tblConsulta.getValueAt(linha, 6).toString());
+                txtCodCliente.setText(tblConsulta.getValueAt(linha, 7).toString());
+            }
+        });
+        tblConsulta.setModel(new DefaultTableModel(
+            new Object[][] {},
+            new String[] {
+                "CodChale", "Estado", "Data Início", "Data Fim", "Qtd Pessoas", "Desconto", "Valor Final", "Cod Cliente"
+            }
+        ) {
+            Class[] columnTypes = new Class[] {
+                Integer.class, String.class, String.class, String.class, Integer.class, Double.class, Double.class, Integer.class
+            };
+            public Class getColumnClass(int columnIndex) {
+                return columnTypes[columnIndex];
+            }
+            boolean[] columnEditables = new boolean[] {
+                false, false, false, false, false, false, false, false
+            };
+            public boolean isCellEditable(int row, int column) {
+                return columnEditables[column];
+            }
+        });
+        scrollPane.setViewportView(tblConsulta);
+        panel_2.setLayout(gl_panel_2);
+
+        JButton btnInserir = new JButton("Inserir");
+        btnInserir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Hospedagem hospedagem = new Hospedagem();
+                hospedagem.setCodChale(Integer.parseInt(txtCodChale.getText()));
+                hospedagem.setEstado(txtEstado.getText());
+                hospedagem.setData_inicio(LocalDate.parse(txtDataInicio.getText()));
+                hospedagem.setData_fim(LocalDate.parse(txtDataFim.getText()));
+                hospedagem.setQtd_pessoas(Integer.parseInt(txtQtdPessoas.getText()));
+                hospedagem.setDesconto(Double.parseDouble(txtDesconto.getText()));
+                hospedagem.setValor_final(Double.parseDouble(txtValorFinal.getText()));
+                hospedagem.setCod_cliente(Integer.parseInt(txtCodCliente.getText()));
+                lblMensagem.setText(hospedagemController.inserir(hospedagem));
+            }
+        });
+
+        // Demais botões (Alterar, Excluir, Pesquisar, Limpar, Sair) seguem a mesma lógica do FrmChale, adaptando o modelo para Hospedagem.
+
+        GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+        gl_panel_1.setHorizontalGroup(
+            gl_panel_1.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_panel_1.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnInserir)
+                    // Adicionar outros botões aqui
+                    .addContainerGap(500, Short.MAX_VALUE))
+        );
+        gl_panel_1.setVerticalGroup(
+            gl_panel_1.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_panel_1.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnInserir)
+                    // Adicionar outros botões aqui
+                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panel_1.setLayout(gl_panel_1);
+
+        JLabel lblCodChale = new JLabel("Cod Chalé");
+        JLabel lblEstado = new JLabel("Estado");
+        JLabel lblDataInicio = new JLabel("Data Início");
+        JLabel lblDataFim = new JLabel("Data Fim");
+        JLabel lblQtdPessoas = new JLabel("Qtd Pessoas");
+        JLabel lblDesconto = new JLabel("Desconto");
+        JLabel lblValorFinal = new JLabel("Valor Final");
+        JLabel lblCodCliente = new JLabel("Cod Cliente");
+
+        txtCodChale = new JTextField();
+        txtCodChale.setColumns(10);
+
+        txtEstado = new JTextField();
+        txtEstado.setColumns(10);
+
+        txtDataInicio = new JTextField();
+        txtDataInicio.setColumns(10);
+
+        txtDataFim = new JTextField();
+        txtDataFim.setColumns(10);
+
+        txtQtdPessoas = new JTextField();
+        txtQtdPessoas.setColumns(10);
+
+        txtDesconto = new JTextField();
+        txtDesconto.setColumns(10);
+
+        txtValorFinal = new JTextField();
+        txtValorFinal.setColumns(10);
+
+        txtCodCliente = new JTextField();
+        txtCodCliente.setColumns(10);
+
+        lblMensagem = new JLabel("Mensagem");
+        lblMensagem.setForeground(Color.BLUE);
+        lblMensagem.setFont(new Font("Times New Roman", Font.ITALIC, 11));
+
+        GroupLayout gl_panel = new GroupLayout(panel);
+        gl_panel.setHorizontalGroup(
+            gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_panel.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(lblMensagem)
+                        .addGroup(gl_panel.createSequentialGroup()
+                            .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(lblCodChale)
+                                .addComponent(lblEstado)
+                                .addComponent(lblDataInicio)
+                                .addComponent(lblDataFim))
+                            .addGap(18)
+                            .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCodChale, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDataInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDataFim, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                            .addGap(30)
+                            .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(lblQtdPessoas)
+                                .addComponent(lblDesconto)
+                                .addComponent(lblValorFinal)
+                                .addComponent(lblCodCliente))
+                            .addGap(18)
+                            .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(txtQtdPessoas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDesconto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtValorFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap(200, Short.MAX_VALUE))
+        );
+        gl_panel.setVerticalGroup(
+            gl_panel.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_panel.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCodChale)
+                        .addComponent(txtCodChale, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblQtdPessoas)
+                        .addComponent(txtQtdPessoas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblEstado)
+                        .addComponent(txtEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDesconto)
+                        .addComponent(txtDesconto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDataInicio)
+                        .addComponent(txtDataInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblValorFinal)
+                        .addComponent(txtValorFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addGroup(gl_panel.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDataFim)
+                        .addComponent(txtDataFim, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblCodCliente)
+                        .addComponent(txtCodCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addComponent(lblMensagem)
+                    .addContainerGap(50, Short.MAX_VALUE))
+        );
+        panel.setLayout(gl_panel);
+        contentPane.setLayout(gl_contentPane);
+    }
+}
+

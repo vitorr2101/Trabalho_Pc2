@@ -1,0 +1,50 @@
+package br.com.pc2.rh.persistence;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import br.com.pc2.rh.model.Chale;
+
+public class ChaleDAOImpl {
+	
+	public String inserir(Chale ch) {
+	    String sql = "INSERT INTO Chale(localizacao, capacidade, valorAltaEstacao, valorBaixaEstacao) values(?,?,?,?)";
+	    Connection con = ConnectionFactory.getConnection();
+	    PreparedStatement pst = null;
+	    ResultSet generatedKeys = null;
+
+	    try {
+	        pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+	        pst.setString(1, ch.getLocalizacao());
+	        pst.setInt(2, ch.getCapacidade());
+	        pst.setDouble(3, ch.getValorAltaEstacao());
+	        pst.setDouble(4, ch.getValorBaixaEstacao());
+
+	        int res = pst.executeUpdate();
+
+	        if (res > 0) {
+	            generatedKeys = pst.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                int codigoChale = generatedKeys.getInt(1);
+	                return "Chalé inserido com sucesso! Código gerado: " + codigoChale;
+	            }
+	        }
+	        return "Erro: Não foi possível inserir Chalé";
+
+	    } catch (SQLException e) {
+	        return "Erro ao inserir Chalé: " + e.getMessage();
+
+	    } finally {
+	        try {
+	            if (generatedKeys != null) generatedKeys.close();
+	            if (pst != null) pst.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
+

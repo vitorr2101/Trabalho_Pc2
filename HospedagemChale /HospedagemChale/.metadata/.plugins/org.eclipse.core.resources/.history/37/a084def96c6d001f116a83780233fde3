@@ -1,0 +1,74 @@
+package br.com.pc2.rh.view;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.EmptyBorder;
+
+public class FrmPrincipal extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    FrmPrincipal frame = new FrmPrincipal();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public FrmPrincipal() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 400);
+
+        contentPane = new BackgroundPanel();  // Utilize o BackgroundPanel para definir a imagem de fundo
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+
+        GroupLayout gl_contentPane = new GroupLayout(contentPane);
+        gl_contentPane.setHorizontalGroup(
+            gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGap(0, 584, Short.MAX_VALUE)
+        );
+        gl_contentPane.setVerticalGroup(
+            gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGap(0, 361, Short.MAX_VALUE)
+        );
+        contentPane.setLayout(gl_contentPane);
+    }
+
+    class BackgroundPanel extends JPanel {
+        private static final long serialVersionUID = 1L;
+        private Image backgroundImage;
+
+        public BackgroundPanel() {
+            // Testar o carregamento do recurso
+            URL imageUrl = getClass().getResource("/br/com/pc2/rh/view/Imagem/Imagem.png");
+            if (imageUrl != null) {
+                backgroundImage = Toolkit.getDefaultToolkit().getImage(imageUrl);
+            } else {
+                System.out.println("Image not found!");
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+    }
+}

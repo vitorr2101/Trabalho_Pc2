@@ -1,0 +1,134 @@
+package br.com.pc2.rh.persistence;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.pc2.rh.model.Hospedagem;
+
+public class HospedagemDAOImpl implements HospedagemDAO{
+
+	@Override
+	public String inserir(Hospedagem h) {
+		Connection con = ConnectionFactory.getConnection();		
+		
+		StringBuilder sql =  new StringBuilder();
+		sql.append("insert into Hospedagem(cod, estado, data_inicio, data_fim, qtd_pessoas, desconto, valor_final, cod_cliente)");
+		sql.append("values(?,?,?,?,?,?,?,?)");
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			
+			pst.setInt(1, h.getCod());
+			pst.setString(2, h.getEstado());
+			pst.setObject(3, h.getData_inicio());
+			pst.setObject(4, h.getData_fim());
+			pst.setInt(5, h.getQtd_pessoas());
+			pst.setDouble(6, h.getDesconto());
+			pst.setDouble(7, h.getValor_final());
+			pst.setInt(8, h.getCod_cliente());
+			
+			int res = pst.executeUpdate();
+			if(res > 0) {
+				return "Inserido com sucesso";
+			}else {
+				return "Erro ao inserir";
+			}
+			
+		}catch (SQLException e) {
+			return "Erro ao inserir dados "+e.getMessage();
+		}finally {
+			ConnectionFactory.close(con);
+		}
+		
+	}
+
+	@Override
+	public String alterar(Hospedagem h) {
+		Connection con = ConnectionFactory.getConnection();
+		StringBuilder sql = new StringBuilder();
+		sql.append("update Hospedagem set desconto=?,valor_final=? ");
+		sql.append("where cod=?");
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			pst.setInt(1, h.getCod());
+			pst.setString(2, h.getEstado());
+			pst.setObject(3, h.getData_inicio());
+			pst.setObject(4, h.getData_fim());
+			pst.setInt(5, h.getQtd_pessoas());
+			pst.setDouble(6, h.getDesconto());
+			pst.setDouble(7, h.getValor_final());
+			pst.setInt(8, h.getCod_cliente());
+			int res = pst.executeUpdate();
+			if(res > 0) {
+				return "Alterado com sucesso";
+			}else {
+				return "Erro ao alterar os dados";
+			}
+		}catch (SQLException e) {
+			return "Erro ao alterar dados "+e.getMessage();
+		}finally {
+			ConnectionFactory.close(con);
+		}
+	}
+
+	@Override
+	public String excluir(Hospedagem h) {
+		Connection con = ConnectionFactory.getConnection();
+		StringBuilder sql = new StringBuilder();
+		sql.append("delete from Hospedagem where cod = ?");
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			pst.setInt(1, h.getCod());
+			int res = pst.executeUpdate();
+			if(res > 0) {
+				return "Excluído com sucesso";
+			}else {
+				return "Erro ao inserir";
+			}
+		}catch (SQLException e) {
+			return "Erro ao excluir: "+e.getMessage();
+		}finally {
+			ConnectionFactory.close(con);
+		}
+	}
+
+	@Override
+	public List<Hospedagem> listarTodos() {
+		Connection con = ConnectionFactory.getConnection();
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from Hospedagem ");
+		List<Hospedagem> lista = new ArrayList<Hospedagem>();
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			ResultSet res = pst.executeQuery();
+			if(res != null) {				
+				while(res.next()) {
+					Hospedagem h = new Hospedagem();	
+					h.setCod(res.getInt(1));
+					h.setEstado(res.getString(2));
+					h.setData_inicio(res.getObject(3, LocalDate.class));
+					h.setData_fim(res.getObject(4, LocalDate.class));
+					h.setQtd_pessoas(res.getInt(5));
+					h.setDesconto(res.getDouble(6));
+					h.setValor_final(res.getDouble(7));
+					h.setCod_cliente(res.getInt(8));
+					lista.add(h);
+				}
+				return lista;
+			}else {
+				return null;
+			}
+			
+		}catch (SQLException e) {
+			return null;
+		}finally {
+			ConnectionFactory.close(con);
+		}
+		
+	}
+	
+}

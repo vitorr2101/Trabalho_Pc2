@@ -1,0 +1,25 @@
+package br.com.pc2.rh.persistence;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+
+import br.com.pc2.rh.model.Chale;
+
+public class ChaleDAOImpl {
+	
+	public String inserir() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO Chale values(?,?,?,?)");
+		Connection con = ConnectionFactory.getConnection();
+		
+		try {
+			PreparedStatement pst = new Prepa
+		} catch (SQLException e){
+		return e.getMessage();
+		
+	} finally {
+		ConnectionFactory.close(con);
+	}
+	
+}

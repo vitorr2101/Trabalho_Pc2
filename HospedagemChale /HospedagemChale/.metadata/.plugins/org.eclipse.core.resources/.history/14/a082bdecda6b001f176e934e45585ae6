@@ -1,0 +1,11 @@
+package br.com.pc2.rh.persistence;
+
+import br.com.pc2.rh.model.Chale;
+
+public class ChaleDAOImpl {
+	
+	
+	
+	
+
+}

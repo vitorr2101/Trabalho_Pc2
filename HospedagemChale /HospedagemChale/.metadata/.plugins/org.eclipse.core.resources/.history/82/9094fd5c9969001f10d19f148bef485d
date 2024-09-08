@@ -1,0 +1,83 @@
+package br.com.pc2.rh.model;
+
+import java.time.LocalDate;
+
+public class Cliente {
+    private Integer cod_cliente;
+	private String nome;
+	private String rg;
+	private String endereco;
+    private String bairro;
+	private String cidade;
+    private String estado;
+	private String cep;
+    private LocalDate nascimento;
+
+	public Cliente() {
+	}
+
+	 public Integer getCod_cliente() {
+        return cod_cliente;
+    }
+    public void setCod_cliente(Integer cod_cliente) {
+        this.cod_cliente = cod_cliente;
+    }
+    
+	 public String getNome() {
+        return nome;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public LocalDate getNascimento() {
+        return nascimento;
+    }
+    public void setNascimento(LocalDate nascimento) {
+        this.nascimento = nascimento;
+    }
+
+}
+

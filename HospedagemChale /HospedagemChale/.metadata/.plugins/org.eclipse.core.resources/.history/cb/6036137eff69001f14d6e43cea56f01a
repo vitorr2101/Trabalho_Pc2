@@ -1,0 +1,51 @@
+package br.com.pc2.rh.view;
+
+import java.time.LocalDate;
+
+import br.com.pc2.rh.controller.ClienteController;
+import br.com.pc2.rh.model.Cliente;
+
+public class Teste {
+	    public static void main(String[] args) {
+	    	        ClienteController clienteController = new ClienteController();
+
+	    	        
+	    	        Cliente cliente1 = new Cliente();
+	    	        cliente1.setNome("João da Silva Neto");
+	    	        cliente1.setRg("123456789");
+	    	        cliente1.setEndereco("Rua A, 123");
+	    	        cliente1.setBairro("Centro");
+	    	        cliente1.setCidade("São Paulo");
+	    	        cliente1.setEstado("SP");
+	    	        cliente1.setCep("01000-000");
+	    	        cliente1.setNascimento(LocalDate.of(1985, 5, 20));
+
+	    	        Cliente cliente2 = new Cliente();
+	    	        cliente2.setNome("Maria Oliveira");
+	    	        cliente2.setRg("987654321");
+	    	        cliente2.setEndereco("Avenida B, 456");
+	    	        cliente2.setBairro("Jardins");
+	    	        cliente2.setCidade("Rio de Janeiro");
+	    	        cliente2.setEstado("RJ");
+	    	        cliente2.setCep("20000-000");
+	    	        cliente2.setNascimento(LocalDate.of(1990, 3, 15));
+
+	    	        Cliente cliente3 = new Cliente();
+	    	        cliente3.setNome("Carlos Pereira");
+	    	        cliente3.setRg("456123789");
+	    	        cliente3.setEndereco("Rua C, 789");
+	    	        cliente3.setBairro("Vila Nova");
+	    	        cliente3.setCidade("Belo Horizonte");
+	    	        cliente3.setEstado("MG");
+	    	        cliente3.setCep("30000-000");
+	    	        cliente3.setNascimento(LocalDate.of(1978, 12, 25));
+	    	        
+	    	        System.out.println(clienteController.inserir(cliente1));
+	    	        System.out.println(clienteController.inserir(cliente2));
+	    	        System.out.println(clienteController.inserir(cliente3));
+	    	    }
+    
+}
+
+
+

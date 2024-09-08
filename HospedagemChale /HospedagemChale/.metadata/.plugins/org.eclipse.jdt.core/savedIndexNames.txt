@@ -1,0 +1,5 @@
+INDEX VERSION 1.134+C:\Users\Tony\HospedagemChale\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+647396751.index
+3413725848.index
+4285092287.index

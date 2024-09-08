@@ -1,0 +1,25 @@
+package br.com.pc2.rh.view;
+
+import java.time.LocalDate;
+
+import br.com.pc2.rh.controller.ClienteController;
+import br.com.pc2.rh.model.Cliente;
+
+public class Teste {
+	    public static void main(String[] args) {
+	        Cliente cliente = new Cliente();
+	        cliente.setNome("João da Silva");
+	        cliente.setRg("123456789");
+	        cliente.setEndereco("Rua A, 123");
+	        cliente.setBairro("Centro");
+	        cliente.setCidade("São Paulo");
+	        cliente.setEstado("SP");
+	        cliente.setCep("01000-000");
+	        cliente.setNascimento(LocalDate.of(1985, 5, 20));
+
+	        ClienteController clienteController = new ClienteController();
+
+	        System.out.println(clienteController.inserir(cliente));
+	    }
+	}
+}

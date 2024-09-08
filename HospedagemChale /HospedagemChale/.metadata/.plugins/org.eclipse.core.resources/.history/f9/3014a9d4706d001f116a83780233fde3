@@ -1,0 +1,92 @@
+package br.com.pc2.rh.Util;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import br.com.pc2.rh.controller.ChaleController;
+import br.com.pc2.rh.controller.ClienteController;
+import br.com.pc2.rh.controller.HospedagemController;
+import br.com.pc2.rh.model.Chale;
+import br.com.pc2.rh.model.Cliente;
+import br.com.pc2.rh.model.Hospedagem;
+
+public class Util {
+
+    public static void carregarClientes(JTable tblClientes) {
+        List<Cliente> clientes = new ArrayList<>();
+        
+        ClienteController cc = new ClienteController();
+        clientes = cc.listarTodos();
+        
+        DefaultTableModel tbl = (DefaultTableModel) tblClientes.getModel();
+        
+        tbl.setRowCount(0);
+
+        for (Cliente cliente : clientes) {
+            Object[] dadosLinha = {
+                cliente.getCodCliente(),
+                cliente.getNome(),
+                cliente.getRg(),
+                cliente.getEndereco(),
+                cliente.getBairro(),
+                cliente.getCidade(),
+                cliente.getEstado(),
+                cliente.getCep(),
+                cliente.getNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            };
+            tbl.addRow(dadosLinha);
+        }
+    }
+
+    public static void carregarHospedagens(JTable tblHospedagens) {
+        List<Hospedagem> hospedagens = new ArrayList<>();
+        
+        HospedagemController hc = new HospedagemController();
+        hospedagens = hc.listarTodos();
+        
+        DefaultTableModel tbl = (DefaultTableModel) tblHospedagens.getModel();
+        
+        tbl.setRowCount(0);
+        
+        for (Hospedagem hospedagem : hospedagens) {
+            Object[] dadosLinha = {
+                hospedagem.getCodHospedagem(),
+                hospedagem.getCodChale(),
+                hospedagem.getEstado(),
+                hospedagem.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                hospedagem.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                hospedagem.getQtdPessoas(),
+                hospedagem.getDesconto(),
+                hospedagem.getValorFinal()
+                hospedagem.getCodCliente(),
+            };
+            tbl.addRow(dadosLinha);
+        }
+    }
+
+    public static void carregarChales(JTable tblChales) {
+        List<Chale> chales = new ArrayList<>();
+        
+        ChaleController cc = new ChaleController();
+        chales = cc.listarTodos();
+        
+        DefaultTableModel tbl = (DefaultTableModel) tblChales.getModel();
+        
+        tbl.setRowCount(0);
+
+        for (Chale chale : chales) {
+            Object[] dadosLinha = {
+                chale.getCodChale(),
+                chale.getLocalizacao(),
+                chale.getCapacidade(),
+                chale.getValorAltaEstacao(),
+                chale.getValorBaixaEstacao()
+            };
+            tbl.addRow(dadosLinha);
+        }
+    }
+}

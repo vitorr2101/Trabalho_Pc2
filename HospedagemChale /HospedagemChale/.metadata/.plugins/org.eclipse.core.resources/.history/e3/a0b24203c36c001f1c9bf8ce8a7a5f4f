@@ -1,0 +1,110 @@
+package br.com.pc2.rh.persistence;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.pc2.rh.model.Hospedagem;
+
+public class HospedagemDAOImpl implements HospedagemDAO{
+
+	@Override
+	public String inserir(Hospedagem h) {
+	    Connection con = ConnectionFactory.getConnection();
+	    String sql = "INSERT INTO Hospedagem(codChale, estado, data_inicio, data_fim, qtd_pessoas, desconto, valor_final, cod_cliente) VALUES(?,?,?,?,?,?,?,?)";
+	    try {
+	        PreparedStatement pst = con.prepareStatement(sql);
+	        pst.setInt(1, h.getCodChale()); // Corrigido para setInt
+	        pst.setString(2, h.getEstado());
+	        pst.setObject(3, h.getData_inicio()); // Considerar setDate se o banco não aceitar LocalDate diretamente
+	        pst.setObject(4, h.getData_fim());    // Considerar setDate se o banco não aceitar LocalDate diretamente
+	        pst.setInt(5, h.getQtd_pessoas());
+	        pst.setDouble(6, h.getDesconto());
+	        pst.setDouble(7, h.getValor_final());
+	        pst.setInt(8, h.getCod_cliente());
+
+	        int res = pst.executeUpdate();
+	        return res > 0 ? "Inserido com sucesso" : "Erro ao inserir";
+	    } catch (SQLException e) {
+	        return "Erro ao inserir dados: " + e.getMessage();
+	    } finally {
+	        ConnectionFactory.close(con);
+	    }
+	}
+
+
+	@Override
+	public String alterar(Hospedagem h) {
+	    Connection con = ConnectionFactory.getConnection();
+	    String sql = "UPDATE Hospedagem SET estado=?, data_inicio=?, data_fim=?, qtd_pessoas=?, desconto=?, valor_final=?, cod_cliente=? WHERE cod=?";
+	    try {
+	        PreparedStatement pst = con.prepareStatement(sql);
+	        pst.setString(1, h.getEstado());
+	        pst.setObject(2, h.getData_inicio());
+	        pst.setObject(3, h.getData_fim());
+	        pst.setInt(4, h.getQtd_pessoas());
+	        pst.setDouble(5, h.getDesconto());
+	        pst.setDouble(6, h.getValor_final());
+	        pst.setInt(7, h.getCod_cliente());
+	        pst.setInt(8, h.getCod());
+
+	        int res = pst.executeUpdate();
+	        return res > 0 ? "Alterado com sucesso" : "Erro ao alterar os dados";
+	    } catch (SQLException e) {
+	        return "Erro ao alterar dados: " + e.getMessage();
+	    } finally {
+	        ConnectionFactory.close(con);
+	    }
+	}
+
+
+	@Override
+	public String excluir(Hospedagem h) {
+	    Connection con = ConnectionFactory.getConnection();
+	    String sql = "DELETE FROM Hospedagem WHERE cod=?";
+	    try {
+	        PreparedStatement pst = con.prepareStatement(sql);
+	        pst.setInt(1, h.getCod());
+	        int res = pst.executeUpdate();
+	        return res > 0 ? "Excluído com sucesso" : "Erro ao excluir";
+	    } catch (SQLException e) {
+	        return "Erro ao excluir: " + e.getMessage();
+	    } finally {
+	        ConnectionFactory.close(con);
+	    }
+	}
+
+
+	@Override
+	public List<Hospedagem> listarTodos() {
+	    Connection con = ConnectionFactory.getConnection();
+	    String sql = "SELECT * FROM Hospedagem";
+	    List<Hospedagem> lista = new ArrayList<>();
+	    try {
+	        PreparedStatement pst = con.prepareStatement(sql);
+	        ResultSet rs = pst.executeQuery();
+	        while (rs.next()) {
+	            Hospedagem h = new Hospedagem();
+	            h.setCod(rs.getInt("cod"));
+	            h.setEstado(rs.getString("estado"));
+	            h.setData_inicio(rs.getObject("data_inicio", LocalDate.class));
+	            h.setData_fim(rs.getObject("data_fim", LocalDate.class));
+	            h.setQtd_pessoas(rs.getInt("qtd_pessoas"));
+	            h.setDesconto(rs.getDouble("desconto"));
+	            h.setValor_final(rs.getDouble("valor_final"));
+	            h.setCod_cliente(rs.getInt("cod_cliente"));
+	            lista.add(h);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        ConnectionFactory.close(con);
+	    }
+	    return lista;
+	}
+	
+}

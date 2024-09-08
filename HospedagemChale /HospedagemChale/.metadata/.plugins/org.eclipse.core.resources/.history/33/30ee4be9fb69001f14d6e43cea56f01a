@@ -1,0 +1,147 @@
+package br.com.pc2.rh.persistence;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.pc2.rh.model.Cliente;
+
+public class ClienteDAOImpl implements ClienteDAO {
+
+	@Override
+	public String inserir(Cliente cl) {
+	    String sql = "INSERT INTO Cliente(nome, rg, endereco, bairro, cidade, estado, cep, nascimento) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    Connection con = ConnectionFactory.getConnection();
+	    try {
+	    	PreparedStatement pst = con.prepareStatement(sql);
+	        pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+	        pst.setString(1, cl.getNome());
+	        pst.setString(2, cl.getRg());
+	        pst.setString(3, cl.getEndereco());
+	        pst.setString(4, cl.getBairro());
+	        pst.setString(5, cl.getCidade());
+	        pst.setString(6, cl.getEstado());
+	        pst.setString(7, cl.getCep());
+	        pst.setObject(8, cl.getNascimento(), java.sql.Types.DATE);  
+
+	        int res = pst.executeUpdate();
+
+	        if (res > 0) {
+	            ResultSet generatedKeys = pst.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                int codClienteGerado = generatedKeys.getInt(1);
+	                return "Inserido com sucesso. Código gerado: " + codClienteGerado;
+	            }
+	            return "Inserido com sucesso.";
+	        } else {
+	            return "Erro ao inserir.";
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	        return "Erro ao inserir cliente: " + e.getMessage();
+	    } finally {
+	       ConnectionFactory.close(con);
+	    }
+	}
+
+
+	@Override
+	public String alterar(Cliente cl) {
+	    String sql = "UPDATE Cliente SET nomeCliente = ?, endereco = ?, bairro = ?, cidade = ?, estado = ?, CEP = ?, dataNascimento = ? WHERE rgCliente = ?";
+	    Connection con = ConnectionFactory.getConnection();
+	    PreparedStatement pst = null;
+	    try {
+	        pst = con.prepareStatement(sql);
+	        pst.setString(1, cl.getNome());
+	        pst.setString(2, cl.getEndereco());
+	        pst.setString(3, cl.getBairro());
+	        pst.setString(4, cl.getCidade());
+	        pst.setString(5, cl.getEstado());
+	        pst.setString(6, cl.getCep());
+	        pst.setObject(7, cl.getNascimento(), java.sql.Types.DATE);
+	        pst.setString(8, cl.getRg()); 
+
+	        int res = pst.executeUpdate();
+	        if (res > 0) {
+	            return "Alterado com sucesso.";
+	        } else {
+	            return "Erro ao alterar.";
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	        return "Erro ao alterar cliente: " + e.getMessage();
+	    } finally {
+	        try {
+	            if (pst != null) pst.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
+
+	@Override
+	public String excluir(Cliente cl) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("delete from Cliente where nome=? and rg=?");
+		Connection con = ConnectionFactory.getConnection();
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			pst.setString(1, cl.getNome());
+			pst.setString(2, cl.getRg());
+			int res = pst.executeUpdate();
+			if (res > 0) {
+				return "Excluído com sucesso.";
+			} else {
+				return "Erro ao excluir.";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		} finally {
+			ConnectionFactory.close(con);
+		}
+	}
+
+	@Override
+	public List<Cliente> listarTodos() {
+	    String sql = "SELECT * FROM Cliente ORDER BY nomeCliente"; 
+	    Connection con = ConnectionFactory.getConnection();
+	    List<Cliente> lista = new ArrayList<>();
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+
+	    try {
+	        pst = con.prepareStatement(sql);
+	        rs = pst.executeQuery();
+	        while (rs.next()) {
+	            Cliente cl = new Cliente();
+	            cl.setNome(rs.getString("nomeCliente"));   
+	            cl.setRg(rs.getString("rgCliente"));        
+	            cl.setEndereco(rs.getString("endereco"));   
+	            cl.setBairro(rs.getString("bairro"));       
+	            cl.setCidade(rs.getString("cidade"));       
+	            cl.setEstado(rs.getString("estado"));       
+	            cl.setCep(rs.getString("CEP"));             
+	            cl.setNascimento(rs.getObject("dataNascimento", LocalDate.class)); 
+	            lista.add(cl);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (pst != null) pst.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return lista;
+	}
+
+}

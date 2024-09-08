@@ -1,0 +1,68 @@
+package br.com.pc2.rh.view;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class FrmPrincipal extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+
+    public FrmPrincipal() {
+        setTitle("Sistema de Gerenciamento");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 400);
+        JPanel contentPane = new JPanel();
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JButton btnCliente = new JButton("Cliente");
+        btnCliente.setBounds(50, 50, 150, 30);
+        btnCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FrmCliente frmCliente = new FrmCliente();
+                frmCliente.setVisible(true);
+            }
+        });
+        contentPane.add(btnCliente);
+
+        JButton btnHospedagem = new JButton("Hospedagem");
+        btnHospedagem.setBounds(50, 100, 150, 30);
+        btnHospedagem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FrmHospedagem frmHospedagem = new FrmHospedagem();
+                frmHospedagem.setVisible(true);
+            }
+        });
+        contentPane.add(btnHospedagem);
+
+        JButton btnSair = new JButton("Sair");
+        btnSair.setBounds(50, 150, 150, 30);
+        btnSair.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        contentPane.add(btnSair);
+    }
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FrmPrincipal frame = new FrmPrincipal();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+}

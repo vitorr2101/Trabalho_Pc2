@@ -1,0 +1,7 @@
+package br.com.pc2.rh.view;
+
+public class Teste {
+	public static void main(String[] args) {
+		
+	}
+}

@@ -1,0 +1,39 @@
+package br.com.pc2.rh.view;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import br.com.pc2.rh.controller.ClienteController;
+import br.com.pc2.rh.model.Cliente;
+
+public class Teste {
+	    public static void main(String[] args) {
+	    	 ClienteController clienteController = new ClienteController();
+	    	 
+	         List<Cliente> listaClientes = clienteController.listarTodos();
+
+	        
+	         if (listaClientes != null && !listaClientes.isEmpty()) {
+	            
+	             System.out.println("Clientes encontrados:");
+	             for (Cliente cliente : listaClientes) {
+	                 System.out.println(
+	                     "Nome: " + cliente.getNome() +
+	                     " - RG: " + cliente.getRg() +
+	                     " - Endereço: " + cliente.getEndereco() +
+	                     " - Bairro: " + cliente.getBairro() +
+	                     " - Cidade: " + cliente.getCidade() +
+	                     " - Estado: " + cliente.getEstado() +
+	                     " - CEP: " + cliente.getCep() +
+	                     " - Data de Nascimento: " + cliente.getNascimento()
+	                 );
+	             }
+	         } else {
+	             System.out.println("Nenhum cliente encontrado.");
+	         }
+	     }
+    
+}
+
+
+

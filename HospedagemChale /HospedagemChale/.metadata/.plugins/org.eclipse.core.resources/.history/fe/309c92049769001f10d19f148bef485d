@@ -1,0 +1,5 @@
+package br.com.pc2.rh.controller;
+
+public class ClienteController {
+
+}

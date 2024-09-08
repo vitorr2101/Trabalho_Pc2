@@ -1,0 +1,231 @@
+package br.com.pc2.rh.view;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import br.com.pc2.rh.controller.ChaleController;
+import br.com.pc2.rh.model.Chale;
+import java.util.List;
+
+public class FrmChale extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField txtLocalizacao;
+    private JTextField txtCapacidade;
+    private JTextField txtValorAlta;
+    private JTextField txtValorBaixa;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    FrmChale frame = new FrmChale();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public FrmChale() {
+        setTitle("Gerenciamento de Chalés");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        
+        JMenu mnCadastro = new JMenu("Cadastro");
+        menuBar.add(mnCadastro);
+        
+        JMenuItem mntmInserir = new JMenuItem("Inserir");
+        mntmInserir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                inserirChale();
+            }
+        });
+        mnCadastro.add(mntmInserir);
+        
+        JMenuItem mntmAlterar = new JMenuItem("Alterar");
+        mntmAlterar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                alterarChale();
+            }
+        });
+        mnCadastro.add(mntmAlterar);
+        
+        JMenuItem mntmExcluir = new JMenuItem("Excluir");
+        mntmExcluir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                excluirChale();
+            }
+        });
+        mnCadastro.add(mntmExcluir);
+        
+        JMenuItem mntmListarTodos = new JMenuItem("Listar Todos");
+        mntmListarTodos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                listarTodos();
+            }
+        });
+        mnCadastro.add(mntmListarTodos);
+        
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        
+        JLabel lblLocalizacao = new JLabel("Localização:");
+        txtLocalizacao = new JTextField();
+        txtLocalizacao.setColumns(10);
+        
+        JLabel lblCapacidade = new JLabel("Capacidade:");
+        txtCapacidade = new JTextField();
+        txtCapacidade.setColumns(10);
+        
+        JLabel lblValorAlta = new JLabel("Valor Alta Estação:");
+        txtValorAlta = new JTextField();
+        txtValorAlta.setColumns(10);
+        
+        JLabel lblValorBaixa = new JLabel("Valor Baixa Estação:");
+        txtValorBaixa = new JTextField();
+        txtValorBaixa.setColumns(10);
+        
+        JButton btnBuscar = new JButton("Buscar por Localização");
+        btnBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buscarPorLocalizacao();
+            }
+        });
+        
+        GroupLayout gl_contentPane = new GroupLayout(contentPane);
+        gl_contentPane.setHorizontalGroup(
+            gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_contentPane.createSequentialGroup()
+                    .addGap(20)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                        .addComponent(lblLocalizacao)
+                        .addComponent(lblCapacidade)
+                        .addComponent(lblValorAlta)
+                        .addComponent(lblValorBaixa))
+                    .addGap(18)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+                        .addComponent(txtValorBaixa)
+                        .addComponent(txtValorAlta)
+                        .addComponent(txtCapacidade)
+                        .addComponent(txtLocalizacao))
+                    .addGap(18)
+                    .addComponent(btnBuscar)
+                    .addContainerGap(23, Short.MAX_VALUE))
+        );
+        gl_contentPane.setVerticalGroup(
+            gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_contentPane.createSequentialGroup()
+                    .addGap(20)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(lblLocalizacao)
+                        .addComponent(txtLocalizacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar))
+                    .addGap(18)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(lblCapacidade)
+                        .addComponent(txtCapacidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(lblValorAlta)
+                        .addComponent(txtValorAlta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(18)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(lblValorBaixa)
+                        .addComponent(txtValorBaixa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(85, Short.MAX_VALUE))
+        );
+        contentPane.setLayout(gl_contentPane);
+    }
+
+    private void inserirChale() {
+        ChaleController controller = new ChaleController();
+        Chale chale = new Chale();
+        chale.setLocalizacao(txtLocalizacao.getText());
+        chale.setCapacidade(Integer.parseInt(txtCapacidade.getText()));
+        chale.setValorAltaEstacao(Double.parseDouble(txtValorAlta.getText()));
+        chale.setValorBaixaEstacao(Double.parseDouble(txtValorBaixa.getText()));
+        
+        String resultado = controller.inserir(chale);
+        JOptionPane.showMessageDialog(this, resultado);
+    }
+    
+    private void alterarChale() {
+        ChaleController controller = new ChaleController();
+        Chale chale = new Chale();
+        chale.setLocalizacao(txtLocalizacao.getText());
+        chale.setCapacidade(Integer.parseInt(txtCapacidade.getText()));
+        chale.setValorAltaEstacao(Double.parseDouble(txtValorAlta.getText()));
+        chale.setValorBaixaEstacao(Double.parseDouble(txtValorBaixa.getText()));
+        
+        String resultado = controller.alterar(chale);
+        JOptionPane.showMessageDialog(this, resultado);
+    }
+    
+    private void excluirChale() {
+        ChaleController controller = new ChaleController();
+        Chale chale = new Chale();
+        chale.setLocalizacao(txtLocalizacao.getText());
+        
+        String resultado = controller.excluir(chale);
+        JOptionPane.showMessageDialog(this, resultado);
+    }
+    
+    private void listarTodos() {
+        ChaleController controller = new ChaleController();
+        List<Chale> lista = controller.listarTodos();
+        
+        if (!lista.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Chale ch : lista) {
+                sb.append("Localização: ").append(ch.getLocalizacao()).append("\n")
+                  .append("Capacidade: ").append(ch.getCapacidade()).append("\n")
+                  .append("Valor Alta Estação: ").append(ch.getValorAltaEstacao()).append("\n")
+                  .append("Valor Baixa Estação: ").append(ch.getValorBaixaEstacao()).append("\n\n");
+            }
+            JOptionPane.showMessageDialog(this, sb.toString());
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum chalé encontrado.");
+        }
+    }
+    
+    private void buscarPorLocalizacao() {
+        ChaleController controller = new ChaleController();
+        String localizacao = txtLocalizacao.getText();
+        Chale chale = controller.buscarPorLocalizacao(localizacao);
+        
+        if (chale != null) {
+            txtCapacidade.setText(String.valueOf(chale.getCapacidade()));
+            txtValorAlta.setText(String.valueOf(chale.getValorAltaEstacao()));
+            txtValorBaixa.setText(String.valueOf(chale.getValorBaixaEstacao()));
+        } else {
+            JOptionPane.showMessageDialog(this, "Chalé não encontrado.");
+        }
+    }
+}
