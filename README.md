@@ -17,6 +17,7 @@ Distribuição do Java SE 17 e a versão mais recente do PostgreSQL.
     Esse processo pode ser feito através do terminal ou de uma IDE de sua preferência.
     
     3. Após essa etapa, é hora de compilar o programa, para isso adicione o arquivo: postgresql-42.2.23.jar 
-    no Build Path caso seja necessário. Em seguida, digite: javac -d bin src /br/com/pc2/rh/view/FrmPrincipal.java
-    Enfim, execute: java -cp bin src.br.com.pcs.rh.view.FrmPrincipal
+    no Build Path caso seja necessário. Em seguida, na pasta HospedagemChale que contém as pastas bin e src, digite: javac -d bin src/br/com/pc2/rh/view/FrmPrincipal.java
+    Enfim, execute: java -cp bin br.com.pc2.rh.view.FrmPrincipal
+
 
